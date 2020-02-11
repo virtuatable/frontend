@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <% css_files.each do |file| %>
+      <link rel="stylesheet" type="text/css" href="<%= file %>" />
+    <% end %>
+    <%= csrf_tag %>
+  </head>
+  <body>
+    <div id="app"></div>
+    <% js_files.each do |file| %>
+      <script type="text/javascript" language="javascript" src="<%= file %>"></script>
+    <% end %>
+  </body>
+</html>

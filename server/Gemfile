@@ -1,0 +1,12 @@
+source 'https://rubygems.org/'
+
+group :development, :test, :production do
+  gem 'sinatra'  , '2.0.5'
+  gem 'faraday'  , '0.15.2'
+  gem 'rack_csrf', '2.6.0' , require: 'rack/csrf'
+  gem 'dotenv'   , '2.7.2'
+end
+
+group :development do
+  gem 'pry'
+end

@@ -2,10 +2,9 @@ FROM ruby:2.6.5
 
 WORKDIR /frontend
 
-COPY . /frontend
+COPY server /frontend
 
-RUN gem install bundler:{{bundler}}
+RUN gem install bundler:2.1.4
 RUN bundle update --bundler
-RUN bundle install
 
-CMD rackup -p {{port}} -o 0.0.0.0 --env production
+CMD rackup -p 80 -o 0.0.0.0 --env production

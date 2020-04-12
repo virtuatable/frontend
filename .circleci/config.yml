@@ -1,0 +1,60 @@
+version: 2.1
+
+orbs:
+  kube: circleci/kubernetes@0.11.0
+
+jobs:
+  build-job:
+    docker:
+      - image: circleci/ruby:2.6.5-node-browsers
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: |
+          echo $DOCKER_PWD | docker login --username $DOCKER_USER --password-stdin
+      - run: |
+          gem install virtuatable
+      - run: |
+          cd client && yarn install && yarn build
+      - run: |
+          virtuatable docker create frontend --local
+  deploy-job:
+    docker:
+      - image: circleci/ruby:2.6.5-node-browsers
+    steps:
+      - kube/install-kubectl
+      - run: |
+           gem install faraday
+      - run: |
+          mkdir $HOME/.kube
+      - run: |
+          echo -n "${KUBERNETES_CONFIG}" | base64 --decode > $HOME/.kube/config
+      - run: |
+          ruby ./kubernetes/deploy.rb | kubectl apply -f -
+  tag-job:
+    docker:
+      - image: circleci/ruby:2.6.5-node-browsers
+    steps:
+      - gem install virtuatable
+      - run: |
+          virtuatable docker latest frontend | xargs git tag
+      - run: |
+          git push --tags
+workflows:
+  version: 2.1
+  build-deploy:
+    jobs:
+      - build-job:
+      - deploy-job:
+          requires:
+            - build-job
+          filters:
+            branches:
+              only: master
+      - tag-job:
+          requires:
+            - build-job
+          filters:
+            branches:
+              only: master

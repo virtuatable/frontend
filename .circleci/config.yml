@@ -45,16 +45,16 @@ workflows:
   version: 2.1
   build-deploy:
     jobs:
-      - build-job
-      - deploy-job:
+      - "Docker build and push"
+      - "Kubernetes deployment":
           requires:
-            - build-job
+            - "Docker build and push"
           filters:
             branches:
               only: master
-      - tag-job:
+      - "Git tag":
           requires:
-            - build-job
+            - "Docker build and push"
           filters:
             branches:
               only: master

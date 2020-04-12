@@ -19,6 +19,7 @@ module Controllers
     end
 
     post '/api' do
+      require 'pry'; binding.pry
       begin
         forwarded = Services::Forwarding.instance.forward(request.body)
         halt forwarded.status, forwarded.body

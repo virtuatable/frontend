@@ -119,7 +119,7 @@
           const account = this.account
           axios({
             method: 'post',
-            url: 'http://localhost:9292/api',
+            url: '/api',
             data: {
               url: '/accounts',
               method: 'POST',

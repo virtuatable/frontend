@@ -36,7 +36,8 @@ jobs:
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
     steps:
-      - gem install virtuatable
+      - run: |
+          gem install virtuatable
       - run: |
           virtuatable docker latest frontend | xargs git tag
       - run: |

@@ -4,7 +4,7 @@ orbs:
   kube: circleci/kubernetes@0.11.0
 
 jobs:
-  build-job:
+  "Docker build & push":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
       - image: circleci/node:latest
@@ -19,7 +19,7 @@ jobs:
           cd client && yarn install && yarn build
       - run: |
           virtuatable docker create frontend --local
-  deploy-job:
+  "Kubernetes deployment":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
     steps:
@@ -32,7 +32,7 @@ jobs:
           echo -n "${KUBERNETES_CONFIG}" | base64 --decode > $HOME/.kube/config
       - run: |
           ruby ./kubernetes/deploy.rb | kubectl apply -f -
-  tag-job:
+  "Git tag & push --tags":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
     steps:

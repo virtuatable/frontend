@@ -4,7 +4,7 @@ orbs:
   kube: circleci/kubernetes@0.11.0
 
 jobs:
-  "Docker build & push":
+  "Docker build and push":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
       - image: circleci/node:latest

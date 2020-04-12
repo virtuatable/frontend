@@ -18,7 +18,7 @@ jobs:
       - run: |
           cd client && yarn install && yarn build
       - run: |
-          cd .. && virtuatable docker create frontend --local
+          virtuatable docker create frontend --local
   "Kubernetes deployment":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers

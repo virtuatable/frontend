@@ -22,7 +22,7 @@ jobs:
       - run: |
           pwd
       - run: |
-          cd .. && virtuatable docker create frontend --local
+          virtuatable docker create frontend --local
       - run: |
           pwd
   "Kubernetes deployment":

@@ -16,9 +16,15 @@ jobs:
       - run: |
           gem install virtuatable:2.5.2
       - run: |
+          pwd
+      - run: |
           cd client && yarn install && yarn build
       - run: |
+          pwd
+      - run: |
           cd .. && virtuatable docker create frontend --local
+      - run: |
+          pwd
   "Kubernetes deployment":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers

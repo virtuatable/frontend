@@ -11,11 +11,13 @@
                   label="Username"
                   :rules="[
                     required('username'),
-                    minLength('username', 6)
+                    minLength('username', 6),
+                    alreadyUsed('username')
                   ]"
                   hide-details="auto"
                   outlined
                   v-model="account.username"
+                  @change="resetUsed('username')"
                 ></v-text-field>
               </v-row>
               <v-row class="py-1">
@@ -51,6 +53,7 @@
                   hide-details="auto"
                   outlined
                   v-model="account.email"
+                  @change="resetUsed('email')"
                 ></v-text-field>
               </v-row>
               <v-row class="py-1">
@@ -73,11 +76,15 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import api from '@/lib/api.js'
   import JQuery from 'jquery'
   
   export default {
     data: () => ({
+      used: {
+        username: false,
+        email: false
+      },
       account: {
         username: '',
         password: '',
@@ -100,6 +107,9 @@
       validForm: true
     }),
     methods: {
+      alreadyUsed(fieldName) {
+        return (value) => !this.used[fieldName] || `This ${fieldName} is already taken`
+      },
       required: (fieldName) => {
         return (value) => !!value ||`You must provide a value for the ${fieldName}`
       },
@@ -115,28 +125,22 @@
         const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/
         return regex.test(value) || 'The format of the email is incorrect'
       },
+      resetUsed(field) {
+        this.used[field] = false
+      },
       register: function (event) {
         this.$refs.registerForm.validate()
 
         if (this.validForm) {
           const account = this.account
-          axios({
-            method: 'post',
-            url: '/api',
-            data: {
-              url: '/accounts',
-              method: 'POST',
-              ...account
-            },
-            headers: {
-              X_CSRF_TOKEN: JQuery('input[name=_csrf]').val()
-            }
-          }).then(response => {
-            console.log(response)
-          })
-          .catch(response => {
-            console.log(response)
-          })
+          api('post', '/accounts', this.account)
+            .catch(error => {
+              const body = error.response.data
+              if (body.error == 'uniq') {
+                this.used[body.field] = true
+              }
+              this.$refs.registerForm.validate()
+            })
         }
       }
     }

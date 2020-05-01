@@ -14,22 +14,6 @@ module Controllers
       def csrf_tag; Rack::Csrf.tag(env); end
     end
 
-    get '/' do
-      erb :index
-    end
-
-    post '/api' do
-      require 'pry'; binding.pry
-      begin
-        forwarded = Services::Forwarding.instance.forward(request.body)
-        halt forwarded.status, forwarded.body
-      rescue Utils::Exceptions::Environment => exception
-        halt 500, exception.to_json
-      rescue Faraday::TimeoutError => exception
-        halt 500, {error: 'timeout'}.to_json
-      end
-    end
-
     def js_files
       simplify_files('js')
     end

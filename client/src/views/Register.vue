@@ -1,68 +1,74 @@
 <template>
   <div class="register">
-    <h1>Register</h1>
-    <v-form ref="registerForm" @submit.prevent.stop="register" value="validForm">
-      <v-container>
-        <v-row class="py-1">
-          <v-text-field
-            label="Username"
-            :rules="[
-              required('username'),
-              minLength('username', 6)
-            ]"
-            hide-details="auto"
-            outlined
-            v-model="account.username"
-          ></v-text-field>
-        </v-row>
-        <v-row class="py-1">
-          <v-text-field
-            class="pr-1"
-            label="Password"
-            type="password"
-            :rules="[required('password')]"
-            hide-details="auto"
-            outlined
-            v-model="account.password"
-          ></v-text-field>
-          <v-text-field
-            class="pl-1"
-            label="Password confirmation"
-            type="password"
-            :rules="[
-              required('password confirmation'),
-              confirmation(account.password)
-            ]"
-            hide-details="auto"
-            outlined
-            v-model="account.password_confirmation"
-          ></v-text-field>
-        </v-row>
-        <v-row class="py-1">
-          <v-text-field
-            label="Email"
-            :rules="[
-              required('email'),
-              emailFormat
-            ]"
-            hide-details="auto"
-            outlined
-            v-model="account.email"
-          ></v-text-field>
-        </v-row>
-        <v-row class="py-1">
-          <v-text-field class="pr-1" label="First name" hide-details="auto" outlined v-model="account.firstname"></v-text-field>
-          <v-text-field class="pl-1" label="Last name" hide-details="auto" outlined v-model="account.lastname"></v-text-field>
-        </v-row>
-        <v-row class="py-1">
-          <v-select class="pr-1" :items="languages" v-model="account.language" outlined></v-select>
-          <v-select class="pl-1" :items="genders" v-model="account.gender" label="Speak to me..." outlined></v-select>
-        </v-row>
-        <v-row>
-          <v-btn type="submit">Register</v-btn>
-        </v-row>
-      </v-container>
-    </v-form>
+    <v-container fluid>
+      <v-row justify="center">
+        <v-col cols="8">
+          <h1>Registration</h1>
+          <v-form ref="registerForm" @submit.prevent.stop="register" :value="validForm">
+            <v-container>
+              <v-row class="py-1">
+                <v-text-field
+                  label="Username"
+                  :rules="[
+                    required('username'),
+                    minLength('username', 6)
+                  ]"
+                  hide-details="auto"
+                  outlined
+                  v-model="account.username"
+                ></v-text-field>
+              </v-row>
+              <v-row class="py-1">
+                <v-text-field
+                  class="pr-1"
+                  label="Password"
+                  type="password"
+                  :rules="[required('password')]"
+                  hide-details="auto"
+                  outlined
+                  v-model="account.password"
+                ></v-text-field>
+                <v-text-field
+                  class="pl-1"
+                  label="Password confirmation"
+                  type="password"
+                  :rules="[
+                    required('password confirmation'),
+                    confirmation(account.password)
+                  ]"
+                  hide-details="auto"
+                  outlined
+                  v-model="account.password_confirmation"
+                ></v-text-field>
+              </v-row>
+              <v-row class="py-1">
+                <v-text-field
+                  label="Email"
+                  :rules="[
+                    required('email'),
+                    emailFormat
+                  ]"
+                  hide-details="auto"
+                  outlined
+                  v-model="account.email"
+                ></v-text-field>
+              </v-row>
+              <v-row class="py-1">
+                <v-text-field class="pr-1" label="First name" hide-details="auto" outlined v-model="account.firstname"></v-text-field>
+                <v-text-field class="pl-1" label="Last name" hide-details="auto" outlined v-model="account.lastname"></v-text-field>
+              </v-row>
+              <v-row class="py-1">
+                <v-select class="pr-1" :items="languages" v-model="account.language" outlined></v-select>
+                <v-select class="pl-1" :items="genders" v-model="account.gender" label="Speak to me..." outlined></v-select>
+              </v-row>
+              <v-row>
+                <v-btn type="submit">Register</v-btn>
+              </v-row>
+            </v-container>
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -112,9 +118,6 @@
       register: function (event) {
         this.$refs.registerForm.validate()
 
-        console.log(this)
-        console.log(this.validForm)
-
         if (this.validForm) {
           const account = this.account
           axios({
@@ -128,6 +131,11 @@
             headers: {
               X_CSRF_TOKEN: JQuery('input[name=_csrf]').val()
             }
+          }).then(response => {
+            console.log(response)
+          })
+          .catch(response => {
+            console.log(response)
           })
         }
       }

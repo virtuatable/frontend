@@ -67,7 +67,8 @@
                   :items="languages"
                   v-model="account.language"
                   :label="$t('labels.languages')"
-                  outlined>
+                  outlined
+                  @change="setLocale(account.language)">
                 </v-select>
                 <v-select
                   class="pl-1"
@@ -105,12 +106,12 @@
         email: '',
         firstname: '',
         lastname: '',
-        language: 'en_GB',
+        language: 'fr_FR',
         gender: 'neutral',
       },
       languages: [
-        {value: 'en_GB', text: 'English'},
-        {value: 'fr_FR', text: 'Français'}
+        {value: 'fr_FR', text: 'Français'},
+        {value: 'en_GB', text: 'English'}
       ],
       validForm: true
     }),
@@ -122,7 +123,7 @@
       }
     },
     methods: {
-      ...mapMutations(['showSnackbar']),
+      ...mapMutations(['showSnackbar', 'setLocale']),
       unicity(field) {
         return (value) => !this.used[field] || this.$t(`rules.uniq.${field}`)
       },
@@ -166,7 +167,56 @@
 
 <i18n>
 {
-  "fr": {
+  "en_GB": {
+    "buttons": {
+      "submit": "Register"
+    },
+    "labels": {
+      "email": "Email address",
+      "firstname": "First name",
+      "genders": "Speak to me",
+      "languages": "Languages",
+      "lastname": "Last name",
+      "password": "Password",
+      "password_confirmation": "Password confirmation",
+      "username": "Username"
+    },
+    "messages": {
+      "confirmation": "Your account is created, you can now log in."
+    },
+    "options": {
+      "genders": {
+        "female": "as a women",
+        "male": "as a man",
+        "neutral": "in a neutral way"
+      }
+    },
+    "rules": {
+      "confirmation": {
+        "password": "Confirmation must match the password"
+      },
+      "format": {
+        "email": "the format of the email is wrong"
+      },
+      "min_length": {
+        "username": "The username must have a length of at least six characters"
+      },
+      "required": {
+        "email": "You must provide an email address",
+        "password": "You must provide a password",
+        "password confirmation": "Password confirmation is mandatory",
+        "username": "You must enter a username"
+      },
+      "uniq": {
+        "email": "This email is already used",
+        "username": "This username is already used"
+      }
+    },
+    "title": {
+      "registration": "Registration"
+    }
+  },
+  "fr_FR": {
     "buttons": {
       "submit": "S'inscrire"
     },

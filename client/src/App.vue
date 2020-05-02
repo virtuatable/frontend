@@ -2,16 +2,16 @@
   <v-app>
     <v-app-bar dark dense app>
       <v-btn text to="/">
-        <span class="mr-2">Home</span>
+        <span class="mr-2">{{ $t('buttons.home') }}</span>
       </v-btn>
 
       <v-spacer></v-spacer>
 
       <v-btn text to="signup">
-        <span class="mr-2">Sign up</span>
+        <span class="mr-2">{{ $t('buttons.signup') }}</span>
       </v-btn>
       <v-btn text to="login">
-        <span class="mr-2">Sign in</span>
+        <span class="mr-2">{{ $t('buttons.signin') }}</span>
       </v-btn>
     </v-app-bar>
 
@@ -39,16 +39,27 @@ import {mapState} from 'vuex'
 export default {
   name: 'App',
   computed: {
-    ...mapState(['snackbar'])
+    ...mapState(['snackbar', 'locale'])
   }
 };
 </script>
 
 <i18n>
 {
-  "fr": {
+  "en_GB": {
     "buttons": {
-      "close": "Fermer"
+      "close": "Close",
+      "home": "Home",
+      "signin": "Sign in",
+      "signup": "Sign up"
+    }
+  },
+  "fr_FR": {
+    "buttons": {
+      "close": "Fermer",
+      "home": "Accueil",
+      "signin": "Connexion",
+      "signup": "Inscription"
     }
   }
 }

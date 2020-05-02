@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import i18n from '@/i18n.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     authenticated: false,
+    locale: 'fr_FR',
     snackbar: {
       text: '',
       shown: false,
@@ -26,11 +28,16 @@ const store = new Vuex.Store({
           Object.assign(state, JSON.parse(stored))
         )
       }
+      this.commit('setLocale', state.locale)
     },
     showSnackbar(state, message, color = 'success') {
       state.snackbar.text = message
       state.snackbar.color = color
       state.snackbar.shown = true
+    },
+    setLocale(state, locale = 'fr_FR') {
+      state.locale = locale
+      i18n.locale = locale
     }
   },
   actions: {

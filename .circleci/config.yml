@@ -53,7 +53,10 @@ workflows:
   version: 2.1
   build-deploy:
     jobs:
-      - "Docker build and push"
+      - "Docker build and push":
+          filters:
+            branches:
+              only: master
       - "Kubernetes deployment":
           requires:
             - "Docker build and push"

@@ -3,16 +3,16 @@
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="8">
-          <h1>Registration</h1>
+          <h1>{{$t('title.registration')}}</h1>
           <v-form ref="registerForm" @submit.prevent.stop="register" :value="validForm">
             <v-container>
               <v-row class="py-1">
                 <v-text-field
-                  label="Username"
+                  :label="$t('labels.username')"
                   :rules="[
                     required('username'),
                     minLength('username', 6),
-                    alreadyUsed('username')
+                    unicity('username')
                   ]"
                   hide-details="auto"
                   outlined
@@ -23,7 +23,7 @@
               <v-row class="py-1">
                 <v-text-field
                   class="pr-1"
-                  label="Password"
+                  :label="$t('labels.password')"
                   type="password"
                   :rules="[required('password')]"
                   hide-details="auto"
@@ -32,11 +32,11 @@
                 ></v-text-field>
                 <v-text-field
                   class="pl-1"
-                  label="Password confirmation"
+                  :label="$t('labels.password_confirmation')"
                   type="password"
                   :rules="[
                     required('password confirmation'),
-                    confirmation(account.password)
+                    confirmation
                   ]"
                   hide-details="auto"
                   outlined
@@ -45,9 +45,10 @@
               </v-row>
               <v-row class="py-1">
                 <v-text-field
-                  label="Email"
+                  :label="$t('labels.email')"
                   :rules="[
                     required('email'),
+                    unicity('email'),
                     emailFormat
                   ]"
                   hide-details="auto"
@@ -57,15 +58,27 @@
                 ></v-text-field>
               </v-row>
               <v-row class="py-1">
-                <v-text-field class="pr-1" label="First name" hide-details="auto" outlined v-model="account.firstname"></v-text-field>
-                <v-text-field class="pl-1" label="Last name" hide-details="auto" outlined v-model="account.lastname"></v-text-field>
+                <v-text-field class="pr-1" :label="$t('labels.firstname')" hide-details="auto" outlined v-model="account.firstname"></v-text-field>
+                <v-text-field class="pl-1" :label="$t('labels.lastname')" hide-details="auto" outlined v-model="account.lastname"></v-text-field>
               </v-row>
               <v-row class="py-1">
-                <v-select class="pr-1" :items="languages" v-model="account.language" outlined></v-select>
-                <v-select class="pl-1" :items="genders" v-model="account.gender" label="Speak to me..." outlined></v-select>
+                <v-select
+                  class="pr-1"
+                  :items="languages"
+                  v-model="account.language"
+                  :label="$t('labels.languages')"
+                  outlined>
+                </v-select>
+                <v-select
+                  class="pl-1"
+                  :items="genders"
+                  v-model="account.gender"
+                  :label="$t('labels.genders')"
+                  outlined>
+                </v-select>
               </v-row>
               <v-row>
-                <v-btn type="submit">Register</v-btn>
+                <v-btn type="submit">{{$t('buttons.submit')}}</v-btn>
               </v-row>
             </v-container>
           </v-form>
@@ -77,7 +90,7 @@
 
 <script>
   import api from '@/lib/api.js'
-  import JQuery from 'jquery'
+  import {mapMutations} from 'vuex'
   
   export default {
     data: () => ({
@@ -97,33 +110,34 @@
       },
       languages: [
         {value: 'en_GB', text: 'English'},
-        {value: 'fr_FR', text: 'French'}
-      ],
-      genders: [
-        {value: 'male', text: 'As a man'},
-        {value: 'female', text: 'As a woman'},
-        {value: 'neutral', text: 'In a neutral way'}
+        {value: 'fr_FR', text: 'Français'}
       ],
       validForm: true
     }),
+    computed: {
+      genders() {
+        return ['male', 'female', 'neutral'].map(value => {
+          return {value: value, text: this.$t(`options.genders.${value}`)}
+        })
+      }
+    },
     methods: {
-      alreadyUsed(fieldName) {
-        return (value) => !this.used[fieldName] || `This ${fieldName} is already taken`
+      ...mapMutations(['showSnackbar']),
+      unicity(field) {
+        return (value) => !this.used[field] || this.$t(`rules.uniq.${field}`)
       },
-      required: (fieldName) => {
-        return (value) => !!value ||`You must provide a value for the ${fieldName}`
+      required(field) {
+        return (value) => !!value || this.$t(`rules.required.${field}`)
       },
-      minLength: (fieldName, length) => {
-        return (value) => value.length > length || `The value for the ${fieldName} must be at least ${length} characters`
+      minLength(field) {
+        return (value) => value.length > 6 || this.$t(`rules.min_length.${field}`)
       },
-      confirmation: (password) => {
-        return (value) => {
-          return password == value || 'The password and its confirmation must match'
-        }
+      confirmation(value) {
+        return this.account.password == value || this.$t('rules.confirmation.password')
       },
-      emailFormat: (value) => {
+      emailFormat(value) {
         const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/
-        return regex.test(value) || 'The format of the email is incorrect'
+        return regex.test(value) || this.$t('rules.format.email')
       },
       resetUsed(field) {
         this.used[field] = false
@@ -134,6 +148,9 @@
         if (this.validForm) {
           const account = this.account
           api('post', '/accounts', this.account)
+            .then(response => {
+              this.showSnackbar(this.$t('messages.confirmation'))
+            })
             .catch(error => {
               const body = error.response.data
               if (body.error == 'uniq') {
@@ -146,3 +163,57 @@
     }
   }
 </script>
+
+<i18n>
+{
+  "fr": {
+    "buttons": {
+      "submit": "S'inscrire"
+    },
+    "labels": {
+      "email": "Adresse email",
+      "firstname": "Prénom",
+      "genders": "S'adresser à moi",
+      "languages": "Langues",
+      "lastname": "Nom de famille",
+      "password": "Mot de passe",
+      "password_confirmation": "Confirmation du mot de passe",
+      "username": "Nom d'utilisateur"
+    },
+    "messages": {
+      "confirmation": "Votre compte utilisateur a bien été créé, vous pouvez dès à présent vous connecter"
+    },
+    "options": {
+      "genders": {
+        "female": "en tant que femme",
+        "male": "en tant qu'homme",
+        "neutral": "de façon neutre"
+      }
+    },
+    "rules": {
+      "confirmation": {
+        "password": "Le mot de passe et sa confirmation doivent être identiques"
+      },
+      "format": {
+        "email": "Le format de l'adresse email est incorrect"
+      },
+      "min_length": {
+        "username": "Le nom d'utilisateur doit faire au moins six caractères"
+      },
+      "required": {
+        "email": "Vous devez entrer une adresse email",
+        "password": "Vous devez entrer un mot de passe",
+        "password confirmation": "La confirmation du mot de passe est nécessaire",
+        "username": "Vous devez entrer un nom d'utilisateur"
+      },
+      "uniq": {
+        "email": "Cette adresse email est déjà employée",
+        "username": "Ce nom d'utilisateur est déjà employé"
+      }
+    },
+    "title": {
+      "registration": "Inscription"
+    }
+  }
+}
+</i18n>

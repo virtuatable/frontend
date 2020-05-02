@@ -5,7 +5,13 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    authenticated: false
+    authenticated: false,
+    snackbar: {
+      text: '',
+      shown: false,
+      color: 'success',
+      timeout: 5000
+    }
   },
   mutations: {
     /**
@@ -20,6 +26,11 @@ const store = new Vuex.Store({
           Object.assign(state, JSON.parse(stored))
         )
       }
+    },
+    showSnackbar(state, message, color = 'success') {
+      state.snackbar.text = message
+      state.snackbar.color = color
+      state.snackbar.shown = true
     }
   },
   actions: {
@@ -35,7 +46,9 @@ const store = new Vuex.Store({
  */
 store.subscribe((mutation, state) => {
   if (mutation.type != 'initialize') {
-    localStorage.setItem('store', JSON.stringify(state))
+    localStorage.setItem('store', JSON.stringify({
+      authenticated: state.authenticated
+    }))
   }
 })
 

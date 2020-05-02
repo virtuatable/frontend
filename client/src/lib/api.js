@@ -1,4 +1,5 @@
 import axios from 'axios'
+import JQuery from 'jquery'
 
 export default function api(method, url, data) {
   return axios({

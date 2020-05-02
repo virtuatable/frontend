@@ -39,16 +39,6 @@ jobs:
           echo -n "${KUBERNETES_CONFIG}" | base64 --decode > $HOME/.kube/config
       - run: |
           ruby ./kubernetes/deploy.rb | kubectl apply -f -
-  "Git tag":
-    docker:
-      - image: circleci/ruby:2.6.5-node-browsers
-    steps:
-      - run: |
-          gem install virtuatable:2.5.3
-      - run: |
-          virtuatable docker latest frontend | xargs git tag
-      - run: |
-          git push --tags
 workflows:
   version: 2.1
   build-deploy:
@@ -58,12 +48,6 @@ workflows:
             branches:
               only: master
       - "Kubernetes deployment":
-          requires:
-            - "Docker build and push"
-          filters:
-            branches:
-              only: master
-      - "Git tag":
           requires:
             - "Docker build and push"
           filters:

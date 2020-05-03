@@ -1,6 +1,5 @@
 require 'faraday'
 require 'json'
-require 'pry'
 
 # This sleep is here to prevent the non-actualization of the cache
 # on the docker side that would take the previous image to deployment.

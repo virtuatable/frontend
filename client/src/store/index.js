@@ -59,7 +59,6 @@ const store = new Vuex.Store({
 store.subscribe((mutation, state) => {
   if (mutation.type != 'initialize') {
     const picked = _.omit(state, ['snackbar'])
-    console.log(picked)
     localStorage.setItem('store', JSON.stringify(picked))
   }
 })

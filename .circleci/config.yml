@@ -16,15 +16,9 @@ jobs:
       - run: |
           gem install virtuatable:2.5.3
       - run: |
-          pwd
-      - run: |
           cd client && yarn install && yarn build
       - run: |
-          pwd
-      - run: |
           virtuatable docker create frontend --local
-      - run: |
-          pwd
   "Kubernetes deployment":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
@@ -37,6 +31,8 @@ jobs:
           mkdir $HOME/.kube
       - run: |
           echo -n "${KUBERNETES_CONFIG}" | base64 --decode > $HOME/.kube/config
+      - run: |
+          ruby ./kubernetes/deploy.rb
       - run: |
           ruby ./kubernetes/deploy.rb | kubectl apply -f -
 workflows:

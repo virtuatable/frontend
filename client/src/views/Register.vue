@@ -65,15 +65,14 @@
                 <v-select
                   class="pr-1"
                   :items="languages"
-                  v-model="account.language"
+                  v-model="locale"
                   :label="$t('labels.languages')"
-                  outlined
-                  @change="setLocale(account.language)">
+                  outlined>
                 </v-select>
                 <v-select
                   class="pl-1"
                   :items="genders"
-                  v-model="account.gender"
+                  v-model="gender"
                   :label="$t('labels.genders')"
                   outlined>
                 </v-select>
@@ -91,7 +90,8 @@
 
 <script>
   import api from '@/lib/api.js'
-  import {mapMutations} from 'vuex'
+  import store from '@/store'
+  import {mapMutations, mapState} from 'vuex'
   
   export default {
     data: () => ({
@@ -106,8 +106,6 @@
         email: '',
         firstname: '',
         lastname: '',
-        language: 'fr_FR',
-        gender: 'neutral',
       },
       languages: [
         {value: 'fr_FR', text: 'Français'},
@@ -116,6 +114,22 @@
       validForm: true
     }),
     computed: {
+      locale: {
+        get() {
+          return this.$store.state.locale
+        },
+        set(_locale) {
+          this.setLocale(_locale)
+        }
+      },
+      gender: {
+        get() {
+          return this.$store.state.gender
+        },
+        set(_gender) {
+          this.setGender(_gender)
+        }
+      },
       genders() {
         return ['male', 'female', 'neutral'].map(value => {
           return {value: value, text: this.$t(`options.genders.${value}`)}
@@ -123,7 +137,7 @@
       }
     },
     methods: {
-      ...mapMutations(['showSnackbar', 'setLocale']),
+      ...mapMutations(['showSnackbar', 'setLocale', 'setGender']),
       unicity(field) {
         return (value) => !this.used[field] || this.$t(`rules.uniq.${field}`)
       },
@@ -148,7 +162,10 @@
 
         if (this.validForm) {
           const account = this.account
-          api('post', '/accounts', this.account)
+          api('post', '/accounts', Object.assign(this.account, {
+              locale: this.locale,
+              gender: this.gender
+            }))
             .then(response => {
               this.showSnackbar(this.$t('messages.confirmation'))
             })

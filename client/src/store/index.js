@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import i18n from '@/i18n.js'
+import _ from 'lodash'
 
 Vue.use(Vuex)
 
@@ -8,6 +9,7 @@ const store = new Vuex.Store({
   state: {
     authenticated: false,
     locale: 'fr_FR',
+    gender: 'neutral',
     snackbar: {
       text: '',
       shown: false,
@@ -38,6 +40,9 @@ const store = new Vuex.Store({
     setLocale(state, locale = 'fr_FR') {
       state.locale = locale
       i18n.locale = locale
+    },
+    setGender(state, gender = 'neutral') {
+      state.gender = gender
     }
   },
   actions: {
@@ -53,9 +58,9 @@ const store = new Vuex.Store({
  */
 store.subscribe((mutation, state) => {
   if (mutation.type != 'initialize') {
-    localStorage.setItem('store', JSON.stringify({
-      authenticated: state.authenticated
-    }))
+    const picked = _.omit(state, ['snackbar'])
+    console.log(picked)
+    localStorage.setItem('store', JSON.stringify(picked))
   }
 })
 

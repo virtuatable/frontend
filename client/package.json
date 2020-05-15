@@ -4,10 +4,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "test": "jest"
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "global": "^4.4.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "vue": "^2.6.11",
@@ -24,6 +26,7 @@
     "@vue/cli-plugin-vuex": "^4.2.0",
     "@vue/cli-service": "^4.2.0",
     "axios": "^0.19.2",
+    "jest": "^26.0.1",
     "node-sass": "^4.12.0",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.2",

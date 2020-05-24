@@ -6,13 +6,31 @@
           <ValidationObserver ref="observer" v-slot="{ validate }">
             <ValidationProvider name="username" rules="required" v-slot="{ errors, valid }">
               {{ $t(errors[0]) }} - {{ valid }}
-              <v-text-field v-model="username" :error="!valid" outlined hide-details=auto>
+              <v-text-field
+                v-model="username"
+                outlined
+                :error-messages="errors"
+              >
                 <template v-slot:message>
-                  PATATE MOLLE
+                  {{ $t(errors[0]) }}
+                </template>
+              </v-text-field>
+            </ValidationProvider>
+            <ValidationProvider name="email" rules="required" v-slot="{ errors, valid }">
+              {{ $t(errors[0]) }} - {{ valid }}
+              <v-text-field
+                v-model="email"
+                outlined
+                :error-messages="errors"
+              >
+                <template v-slot:message>
+                  {{ $t(errors[0]) }}
                 </template>
               </v-text-field>
             </ValidationProvider>
           </ValidationObserver>
+          <a @click="setLocale('fr_FR')">FR</a>&nbsp;-&nbsp;
+          <a @click="setLocale('en_GB')">EN</a>
         </v-col>
       </v-row>
     </v-container>
@@ -21,6 +39,7 @@
 
 <script>
   import { ValidationProvider, ValidationObserver } from 'vee-validate'
+  import { mapMutations } from 'vuex'
 
   export default {
     components: {
@@ -28,8 +47,12 @@
       ValidationProvider
     },
     data: () => ({
-      username: ""
-    })
+      username: "",
+      email: ""
+    }),
+    methods: {
+      ...mapMutations(['setLocale'])
+    }
   }
 </script>
 

@@ -1,11 +1,8 @@
 module.exports = {
-  "transpileDependencies": [
+  transpileDependencies: [
     "vuetify"
   ],
-
-  "filenameHashing": false,
-  "outputDir": "../server/public",
-
+  outputDir: "../server/public",
   pluginOptions: {
     i18n: {
       locale: 'fr_FR',

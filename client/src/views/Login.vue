@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col cols="8">
           <ValidationObserver ref="observer" v-slot="{ validate }">
-            <ValidationProvider name="username" rules="required" v-slot="{ errors, valid }">
+            <ValidationProvider ref="usernameProvider" name="username" rules="required" v-slot="{ errors, valid }">
               {{ $t(errors[0]) }} - {{ valid }}
               <v-text-field
                 v-model="username"
@@ -51,7 +51,10 @@
       email: ""
     }),
     methods: {
-      ...mapMutations(['setLocale'])
+      ...mapMutations(['setLocale']),
+      submit() {
+        console.log(this.$refs.usernameProvider)
+      }
     }
   }
 </script>

@@ -13,7 +13,7 @@
               <v-row dense>
                 <v-col cols="12">
                   <v-text-field
-                    :label="$t('labels.username')"
+                    :label="$t('labels.username.' + this.gender)"
                     ref="username"
                     :rules="[
                       required('username'),
@@ -245,7 +245,11 @@
       "lastname": "Last name",
       "password": "Password",
       "password_confirmation": "Password confirmation",
-      "username": "Username"
+      "username": {
+        "female": "Username",
+        "male": "Username",
+        "neutral": "Username"
+      }
     },
     "messages": {
       "confirmation": "Your account is created, you can now log in."
@@ -294,7 +298,11 @@
       "lastname": "Nom de famille",
       "password": "Mot de passe",
       "password_confirmation": "Confirmation du mot de passe",
-      "username": "Nom d'utilisateur"
+      "username": {
+        "female": "Nom d'utilisatrice",
+        "male": "Nom d'utilisateur",
+        "neutral": "Nom d'utilisateur.ice"
+      }
     },
     "messages": {
       "confirmation": "Votre compte utilisateur a bien été créé, vous pouvez dès à présent vous connecter"

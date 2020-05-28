@@ -16,14 +16,14 @@ jobs:
       - run: |
           gem install virtuatable:2.5.3
       - run: |
-          cd client && yarn install && yarn build
+          cd client && yarn install && yarn build -o ../server/public
       - run: |
           virtuatable docker create frontend --local
   "Kubernetes deployment":
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
     steps:
-      - checkout
+      - checkout²
       - kube/install-kubectl
       - run: |
            gem install faraday

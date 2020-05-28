@@ -1,84 +1,124 @@
 <template>
   <div class="register">
-    <v-container fluid>
+    <v-container>
       <v-row justify="center">
-        <v-col cols="8">
-          <h1>{{$t('title.registration')}}</h1>
+        <v-col cols="10" md="8">
           <v-form ref="registerForm" @submit.prevent.stop="register" :value="validForm">
             <v-container>
-              <v-row class="py-1">
-                <v-text-field
-                  :label="$t('labels.username')"
-                  :rules="[
-                    required('username'),
-                    minLength('username', 6),
-                    unicity('username')
-                  ]"
-                  hide-details="auto"
-                  outlined
-                  v-model="account.username"
-                  @change="resetUsed('username')"
-                ></v-text-field>
+              <v-row dense>
+                <v-col cols="12">
+                  <h1>{{$t('title.registration')}}</h1>
+                </v-col>
               </v-row>
-              <v-row class="py-1">
-                <v-text-field
-                  class="pr-1"
-                  :label="$t('labels.password')"
-                  type="password"
-                  :rules="[required('password')]"
-                  hide-details="auto"
-                  outlined
-                  v-model="account.password"
-                ></v-text-field>
-                <v-text-field
-                  class="pl-1"
-                  :label="$t('labels.password_confirmation')"
-                  type="password"
-                  :rules="[
-                    required('password confirmation'),
-                    confirmation
-                  ]"
-                  hide-details="auto"
-                  outlined
-                  v-model="account.password_confirmation"
-                ></v-text-field>
+              <v-row dense>
+                <v-col cols="12">
+                  <v-text-field
+                    :label="$t('labels.username')"
+                    ref="username"
+                    :rules="[
+                      required('username'),
+                      minLength('username', 6),
+                      unicity('username')
+                    ]"
+                    hide-details="auto"
+                    outlined
+                    v-model="account.username"
+                    @keyup="resetUsed('username')"
+                  >
+                    <template v-slot:message="{ message }">
+                      {{ $t(message) }}
+                    </template>
+                  </v-text-field>
+                </v-col>
               </v-row>
-              <v-row class="py-1">
-                <v-text-field
-                  :label="$t('labels.email')"
-                  :rules="[
-                    required('email'),
-                    unicity('email'),
-                    emailFormat
-                  ]"
-                  hide-details="auto"
-                  outlined
-                  v-model="account.email"
-                  @change="resetUsed('email')"
-                ></v-text-field>
+              <v-row dense>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    :label="$t('labels.password')"
+                    type="password"
+                    :rules="[required('password')]"
+                    hide-details="auto"
+                    outlined
+                    v-model="account.password"
+                    @keyup="resetConfirmation()"
+                  >
+                    <template v-slot:message="{ message }">
+                      {{ $t(message) }}
+                    </template>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    ref="confirmation"
+                    :label="$t('labels.password_confirmation')"
+                    type="password"
+                    :rules="[
+                      required('password confirmation'),
+                      confirmation
+                    ]"
+                    hide-details="auto"
+                    outlined
+                    v-model="account.password_confirmation"
+                  >
+                    <template v-slot:message="{ message }">
+                      {{ $t(message) }}
+                    </template>
+                  </v-text-field>
+                </v-col>
               </v-row>
-              <v-row class="py-1">
-                <v-text-field class="pr-1" :label="$t('labels.firstname')" hide-details="auto" outlined v-model="account.firstname"></v-text-field>
-                <v-text-field class="pl-1" :label="$t('labels.lastname')" hide-details="auto" outlined v-model="account.lastname"></v-text-field>
+              <v-row dense>
+                <v-col cols="12">
+                  <v-text-field
+                    :label="$t('labels.email')"
+                    ref="email"
+                    :rules="[
+                      required('email'),
+                      unicity('email'),
+                      emailFormat
+                    ]"
+                    hide-details="auto"
+                    outlined
+                    v-model="account.email"
+                    @keyup="resetUsed('email')"
+                  >
+                    <template v-slot:message="{ message }">
+                      {{ $t(message) }}
+                    </template>
+                  </v-text-field>
+                </v-col>
               </v-row>
-              <v-row class="py-1">
-                <v-select
-                  class="pr-1"
-                  :items="languages"
-                  v-model="locale"
-                  :label="$t('labels.languages')"
-                  outlined>
-                </v-select>
-                <v-select
-                  class="pl-1"
-                  :items="genders"
-                  v-model="gender"
-                  :label="$t('labels.genders')"
-                  outlined>
-                </v-select>
+              <v-row dense class="hidden-xs-only">  
+                <v-col cols="6">
+                  <v-text-field :label="$t('labels.firstname')" hide-details="auto" outlined v-model="account.firstname"></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field :label="$t('labels.lastname')" hide-details="auto" outlined v-model="account.lastname"></v-text-field>
+                </v-col>
               </v-row>
-              <v-row>
-                <v-btn type="submit">{{$t('buttons.submit')}}</v-btn>
+              <v-row dense>
+                <v-col cols="12" sm="6">
+                  <v-select
+                    :items="languages"
+                    v-model="locale"
+                    :label="$t('labels.languages')"
+                    hide-details="auto"
+                    outlined>
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-select
+                    :items="genders"
+                    v-model="gender"
+                    :label="$t('labels.genders')"
+                    hide-details="auto"
+                    outlined>
+                  </v-select>
+                </v-col>
+              </v-row>
+              <v-row dense class="pt-2">
+                <v-col cols="12">
+                  <v-btn type="submit">{{$t('buttons.submit')}}</v-btn>
+                </v-col>
               </v-row>
             </v-container>
           </v-form>
@@ -92,6 +132,7 @@
   import api from '@/lib/api.js'
   import store from '@/store'
   import {mapMutations, mapState} from 'vuex'
+  import {has} from 'lodash'
   
   export default {
     data: () => ({
@@ -139,23 +180,31 @@
     methods: {
       ...mapMutations(['showSnackbar', 'setLocale', 'setGender']),
       unicity(field) {
-        return (value) => !this.used[field] || this.$t(`rules.uniq.${field}`)
+        return (value) => !this.used[field] || `rules.uniq.${field}`
       },
       required(field) {
-        return (value) => !!value || this.$t(`rules.required.${field}`)
+        return (value) => !!value || `rules.required.${field}`
       },
       minLength(field) {
-        return (value) => value.length > 6 || this.$t(`rules.min_length.${field}`)
+        return (value) => value.length > 6 || `rules.min_length.${field}`
       },
       confirmation(value) {
-        return this.account.password == value || this.$t('rules.confirmation.password')
+        return this.account.password == value || 'rules.confirmation.password'
       },
       emailFormat(value) {
         const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/
-        return regex.test(value) || this.$t('rules.format.email')
+        return regex.test(value) || 'rules.format.email'
       },
       resetUsed(field) {
-        this.used[field] = false
+        if (this.used[field]) {
+          this.used[field] = false
+          if (has(this.$refs, field)) {
+            this.$refs[field].validate()
+          }
+        }
+      },
+      resetConfirmation() {
+        this.$refs.confirmation.validate()
       },
       register: function (event) {
         this.$refs.registerForm.validate()
@@ -259,7 +308,7 @@
     },
     "rules": {
       "confirmation": {
-        "password": "Le mot de passe et sa confirmation doivent être identiques"
+        "password": "La confirmation doit correspondre"
       },
       "format": {
         "email": "Le format de l'adresse email est incorrect"

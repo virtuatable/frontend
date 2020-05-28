@@ -16,7 +16,7 @@ jobs:
       - run: |
           gem install virtuatable:2.5.3
       - run: |
-          cd client && yarn install && yarn build -o ../server/public
+          cd client && yarn install && yarn build
       - run: |
           virtuatable docker create frontend --local
   "Kubernetes deployment":

@@ -23,7 +23,7 @@ jobs:
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
     steps:
-      - checkout²
+      - checkout
       - kube/install-kubectl
       - run: |
            gem install faraday

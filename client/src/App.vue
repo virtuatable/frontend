@@ -1,19 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar dark dense app>
-      <v-btn text to="/">
-        <span class="mr-2">{{ $t('buttons.home') }}</span>
-      </v-btn>
-
-      <v-spacer></v-spacer>
-
-      <v-btn text to="signup">
-        <span class="mr-2">{{ $t('buttons.signup') }}</span>
-      </v-btn>
-      <v-btn text to="login">
-        <span class="mr-2">{{ $t('buttons.signin') }}</span>
-      </v-btn>
-    </v-app-bar>
+    <logged-menu v-if="authenticated"></logged-menu>
+    <main-menu v-else></main-menu>
 
     <v-content>
       <router-view></router-view>
@@ -34,12 +22,15 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapMutations, mapState } from 'vuex'
+import MainMenu from '@/components/MainMenu.vue'
+import LoggedMenu from '@/components/LoggedMenu.vue'
 
 export default {
   name: 'App',
+  components: { MainMenu, LoggedMenu },
   computed: {
-    ...mapState(['snackbar', 'locale'])
+    ...mapState(['snackbar', 'locale', 'authenticated'])
   }
 };
 </script>

@@ -10,6 +10,7 @@ const store = new Vuex.Store({
     authenticated: false,
     locale: 'fr_FR',
     gender: 'neutral',
+    token: undefined,
     snackbar: {
       text: '',
       shown: false,
@@ -43,6 +44,22 @@ const store = new Vuex.Store({
     },
     setGender(state, gender = 'neutral') {
       state.gender = gender
+    },
+    setToken(state, token) {
+      this.replaceState({
+        ...state,
+        token: token,
+        authenticated: true
+      })
+      localStorage.setItem('authenticated', true)
+    },
+    logout(state) {
+      this.replaceState({
+        ...state,
+        token: undefined,
+        authenticated: false
+      })
+      localStorage.setItem('authenticated', false)
     }
   },
   actions: {

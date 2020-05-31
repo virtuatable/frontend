@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <main-menu></main-menu>
+    <logged-menu v-if="authenticated"></logged-menu>
+    <main-menu v-else></main-menu>
 
     <v-content>
       <router-view></router-view>
@@ -21,14 +22,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import MainMenu from '@/components/MainMenu.vue'
+import LoggedMenu from '@/components/LoggedMenu.vue'
 
 export default {
   name: 'App',
-  components: { MainMenu },
+  components: { MainMenu, LoggedMenu },
   computed: {
-    ...mapState(['snackbar', 'locale'])
+    ...mapState(['snackbar', 'locale', 'authenticated'])
   }
 };
 </script>

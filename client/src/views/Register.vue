@@ -80,6 +80,7 @@
                     outlined
                     v-model="account.email"
                     @keyup="resetUsed('email')"
+                    :validate-on-blur="true"
                   >
                     <template v-slot:message="{ message }">
                       {{ $t(message) }}
@@ -244,12 +245,7 @@
       "languages": "Languages",
       "lastname": "Last name",
       "password": "Password",
-      "password_confirmation": "Password confirmation",
-      "username": {
-        "female": "Username",
-        "male": "Username",
-        "neutral": "Username"
-      }
+      "password_confirmation": "Password confirmation"
     },
     "messages": {
       "confirmation": "Your account is created, you can now log in."
@@ -279,7 +275,11 @@
       },
       "uniq": {
         "email": "This email is already used",
-        "username": "This username is already used"
+        "username": {
+          "female": "This username is already used",
+          "male": "This username is already used",
+          "neutral": "This username is already used"
+        }
       }
     },
     "title": {
@@ -297,12 +297,7 @@
       "languages": "Langues",
       "lastname": "Nom de famille",
       "password": "Mot de passe",
-      "password_confirmation": "Confirmation du mot de passe",
-      "username": {
-        "female": "Nom d'utilisatrice",
-        "male": "Nom d'utilisateur",
-        "neutral": "Nom d'utilisateur.ice"
-      }
+      "password_confirmation": "Confirmation du mot de passe"
     },
     "messages": {
       "confirmation": "Votre compte utilisateur a bien été créé, vous pouvez dès à présent vous connecter"
@@ -322,22 +317,27 @@
         "email": "Le format de l'adresse email est incorrect"
       },
       "min_length": {
-        "username": "Le nom d'utilisateur doit faire au moins six caractères"
+        "username": "Ce champ doit comporter au moins six caractères"
       },
       "required": {
         "email": "Vous devez entrer une adresse email",
         "password": "Vous devez entrer un mot de passe",
         "password confirmation": "La confirmation du mot de passe est nécessaire",
-        "username": "Vous devez entrer un nom d'utilisateur"
+        "username": "Une valeur est requise pour ce champ"
       },
       "uniq": {
         "email": "Cette adresse email est déjà employée",
-        "username": "Ce nom d'utilisateur est déjà employé"
+        "username": {
+          "female": "Ce nom d'utilisatrice est déjà employé",
+          "male": "Ce nom d'utilisateur est déjà employé",
+          "neutral": "Ce nom d'utilisateurice est déjà employé"
+        }
       }
     },
     "title": {
       "registration": "Inscription"
     }
   }
+
 }
 </i18n>

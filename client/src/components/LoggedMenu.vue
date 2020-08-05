@@ -7,6 +7,10 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
 
+    <v-btn text to="/campaigns" class="mr-2">
+      <span>{{ $t('buttons.campaigns') }}</span>
+    </v-btn>
+
     <v-spacer></v-spacer>
 
     <v-btn text @click.prevent.stop="signout()" class="hidden-xs-only">
@@ -50,12 +54,14 @@
   "en_GB": {
     "buttons": {
       "home": "Home",
+      "campaigns": "Campaigns",
       "signout": "Log out"
     }
   },
   "fr_FR": {
     "buttons": {
       "home": "Accueil",
+      "campaigns": "Campagnes",
       "signout": "Déconnexion"
     }
   }

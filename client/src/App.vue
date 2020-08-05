@@ -8,6 +8,7 @@
     </v-content>
 
     <v-snackbar
+      v-if="snackbar"
       v-model="snackbar.shown"
       :color="snackbar.color"
       :bottom="true"

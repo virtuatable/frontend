@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import i18n from '@/i18n.js'
 import _ from 'lodash'
+import campaigns from '@/store/modules/campaigns.js'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,11 @@ const store = new Vuex.Store({
       shown: false,
       color: 'success',
       timeout: 5000
+    }
+  },
+  getters: {
+    getToken(state) {
+      return state.token
     }
   },
   mutations: {
@@ -65,6 +71,7 @@ const store = new Vuex.Store({
   actions: {
   },
   modules: {
+    campaigns: campaigns
   }
 })
 
